@@ -13,11 +13,12 @@ using namespace std;
 
 Queue::Queue()
 {
-    RecordNode * rear = nullptr;
+    this->rear = nullptr;
 }
 
 Queue::~Queue()
 {
+/*33
     RecordNode * deleter = rear;
     RecordNode * inc = rear;
 
@@ -30,14 +31,14 @@ Queue::~Queue()
         releaseRecordNode(deleter);
         inc = inc->next;
     }
+*/
 }
 
 int Queue::enqueue(Record & to_enqueue)
 {
-    Record new_record;
-
-    RecordNode * new_node = new RecordNode;
-    new_node->record = &new_record;
+    Record *new_record = new Record();
+    RecordNode * new_node = new RecordNode();
+    new_node->record = new_record;
 
     new_node->record->copyRecord(to_enqueue);
 
@@ -45,13 +46,14 @@ int Queue::enqueue(Record & to_enqueue)
     {
         rear = new_node;
         new_node->next = rear;
+
         return 0;
     }
     else
     {
+        new_node->next = rear->next;
         rear->next = new_node;
         rear = new_node;
-        new_node->next = rear->next;
     }
     
     return 0;
@@ -59,13 +61,15 @@ int Queue::enqueue(Record & to_enqueue)
 
 int Queue::dequeue(Record & to_dequeue)
 {
-    to_dequeue.copyRecord(*(rear->record));
 
     if(rear == nullptr)
     {
-       return 1;
+       return 1; // error: nothing to dequeue
     }
-    else if(rear == rear->next)
+
+    to_dequeue.copyRecord(*(rear->next->record));
+
+    if(rear == rear->next)
     {
         delete rear;
         rear = nullptr;
@@ -83,7 +87,9 @@ int Queue::dequeue(Record & to_dequeue)
 
 int Queue::peek()
 {
-    cout << "Record at front of Queue: " << endl;
+    if(rear == nullptr)
+        return 1; //error: nothing to peek
+
     rear->next->record->display();
 
     return 0;
@@ -93,22 +99,26 @@ int Queue::display()
 {
     // create temp pointer to increment through the list
     RecordNode * inc = rear->next;
-    int count;
+    int count = 0;
 
-    cout << "\e[1;4mDisplaying Queue From Front to Back:\e[0m" << endl << endl;
+    cout << "\e[1;4mDisplaying Queue From Front to Back\e[0m" << endl << endl;
     
     // increment through the records list printing the name of each activity until
     // we reach the end of the list.
+
     while(inc != rear)
     {
         cout << "\e[1mRecord at Queue Position " << count << endl;
+
         inc->record->display();
         inc = inc->next;
+        ++count;
     }
+
     cout << "\e[1mRecord at Queue Position " << count << endl;
     inc->record->display();
     cout << endl;
-    
+   
     return 0;
 }
 
@@ -119,10 +129,10 @@ int Queue::releaseRecordNode(RecordNode * deleter)
 
 Record::Record()
 {
-    char * name = nullptr;
-    char * notes = nullptr;
-    int start_time = 0;
-    int length_miles = 0;
+    name = nullptr;
+    notes = nullptr;
+    start_time = 0;
+    length_miles = 0;
 }
 
 Record::~Record()

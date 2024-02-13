@@ -1,0 +1,14 @@
+Get The Following Methods Working
+    - enqueue
+    - dequeue
+    - peek
+    - display
+
+Remove Memory Leaks
+    - create private release$(object-type) functions for all classes
+    - get desctructors/constructors right
+
+Test
+    - write code to test all input possibilities
+    - maually test edge cases
+

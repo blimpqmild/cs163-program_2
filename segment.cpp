@@ -2,7 +2,7 @@
 // CS163 Program #2
 // Feb 2 2024
 //
-// <- header comments go here
+// <- header comments go here (to be added later)
 
 #include "stack.h"
 #include <ostream>
@@ -51,13 +51,11 @@ int Stack::push(Segment & to_push)
         top_index = 0;
         head->segments[top_index].copySegment(to_push);
         ++top_index;
-        cout << "push finished, top_index is " << top_index << endl;
     }
     else
     {
         head->segments[top_index].copySegment(to_push);
         ++top_index;
-        cout << "push finished, top_index is " << top_index << endl;
     }
 
     return 0;
@@ -67,27 +65,38 @@ int Stack::pop(Segment & pop_to)
 {
     if(top_index == 0)
     {
-        pop_to.copySegment(head->segments[top_index]);
-        SegmentNode * tmp = new SegmentNode;
-        tmp = head;
+        if(head->next == nullptr)
+            return 1; //error: nothing left to pop
+            
+        SegmentNode * deleter = head;
         head = head->next;
+        
         top_index = MAX-1;
-        delete[] tmp->segments;
-        delete tmp;
-        cout << "pop finished, top_index is " << top_index << endl;
+        pop_to.copySegment(head->segments[top_index]);
+
+        delete[] deleter->segments;
+        delete deleter;
+            
+
     }
     else
     {
-        pop_to.copySegment(head->segments[top_index-1]);
         --top_index;
-        cout << "pop finished, top_index is " << top_index << endl;
+        pop_to.copySegment(head->segments[top_index]);
     }
     return 0;
 }
 
 int Stack::peek()
 {
-    cout << "\e[1mStack Object at Index " << top_index << "\e[0m" << endl;
+
+    if(head == nullptr)
+        return 1; //error: nothing left to pop
+
+    if(head->next == nullptr && top_index == 0)
+        return 1; //error: nothing left to pop
+
+    cout << "\e[1mSegment object at the top of the stack:" << "\e[0m" << endl;
     head->segments[top_index-1].display();
 
     return 0;
@@ -99,8 +108,12 @@ int Stack::display()
     char answer[5];
     int tmp_index = top_index - 1;
 
-    cout << "\e[1;4mDisplaying Stack From Top to Bottom:\e[0m" << endl << endl;
+    if(head == nullptr)
+        return 1; //error: nothing left to pop
+    if(head->next == nullptr && top_index == 0)
+        return 1; //error, nothing on stack to display
 
+    cout << endl;
     // outer while loop traverses the LLL 
     while(!(inc == nullptr))
     {

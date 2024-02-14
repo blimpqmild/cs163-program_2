@@ -9,21 +9,22 @@
 // interface of the queue with operations like enqueue, dequeue, etc via
 // it's public interface. The sole data member is a rear pointer to our
 // circular linked list of RecordNodes.
-//
-// Our Record class holds all the information about a record among it's
-// private data members. It also provides some basic operations for creating
-// and copying records via it's public interface.
+// Our Queue class provides the queue data structure.
+// This is implemented as a circular linked lists, where each node holds a
+// pointer to a Record object and a next pointer. The Queue class provides 
+// the basic operations for managing data on the queue via it's public 
+// interface (i.e. enqueue, dequeue, peek, etc). 
 
 #include "record.h"
 
-// node for a list of record objects
+// each node holds a pointer to a record object and a next pointer to RecordNodes
 struct RecordNode
 {
     Record * record;
     RecordNode * next;
 };
 
-// interface for the queue
+// defines the queue and it's interface
 class Queue
 {
    public:

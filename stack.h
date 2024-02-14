@@ -4,8 +4,8 @@
 //
 // This file provides the ADT for the transit trip segments. 
 //
-// Our Stack class and SegmentNode Struct provides the stack data structure
-// which is implemented as a linear linked list of arrays of Segment objects.   
+// Our Stack class provides the stack data structure.
+// The stack is implemented as a linear linked list of arrays of Segment objects.   
 // The Stack class provides the basic interface of a stack with operations like
 // pop, push, peek, etc via it's public interface. It's private data members are 
 // a head pointer to our linear linked list of SegmentNodes and an integer to act 
@@ -16,13 +16,14 @@
 // used to create arrays of MAX size
 const int MAX = 5;
 
+// holds a pointer to Segment objects and a next pointer to SegmentNodes
 struct SegmentNode
 {
     Segment * segments;
     SegmentNode * next;
 };
 
-// interface for the stack
+// defines the stack ad it's interface
 class Stack
 {
    public:

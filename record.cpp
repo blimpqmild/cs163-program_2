@@ -1,9 +1,32 @@
-
 // Bryce Diedrich
 // CS163 Program #2
 // Feb 2 2024
 //
-// <- header comments go here
+// This file provides the implementation of the Queue and
+// Record class methods
+//
+// The public methods of Queue implemented below are:
+// - enqueue: takes a Record object by reference as input and places it
+//            to the back of the queue
+// - dequeue: takes a Record object by reference as input and removes
+//            an object from the front of the queue and copies it to
+//            the passed Record object.
+// - peek:    takes no input. prints the data values of the record at the
+//            front of the queue.
+// - display: takes no input. prints the data values of all records in 
+//            the queue.
+//
+// The public methods of Record implemented below are:
+// - createRecord: takes two char * objects for the name and notes, and
+//                 two ints for start time and length (miles) as input.
+//                 these values are then copied into the private data members
+//                 of the calling Record object.
+// - copyRecord:   takes a Record object by reference as input and copies 
+//                 it's data member values to the data members of the calling
+//                 Record object.
+// - display:      takes no input. displays the data member values of the 
+//                 calling Record object.
+
 #include "queue.h"
 #include <cstring>
 #include <ostream>

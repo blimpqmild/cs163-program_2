@@ -2,7 +2,30 @@
 // CS163 Program #2
 // Feb 2 2024
 //
-// <- header comments go here (to be added later)
+// This file provides the implementation of the Stack and
+// Segment class methods.
+//
+// The public methods of Stack implemented below are:
+// - push:    takes a Segment object by refrence as input and
+//            places it on the top of the stack
+// - pop:     takes a Segment object by reference as input and
+//            removes a Segment object from the top of the stack,
+//            and copies it to the passed record object.j
+// - peek:    takes no input. prints the data values of the segment
+//            at the top of the stack.
+// - display: takes no input. prints the data values of all segments
+//            on the stack.
+//
+// The public methos of Record implemented below are:
+// - createSegment: takes three char * objects for the transit type, and
+//                  the start and end location names, and one bool to indicate
+//                  if the segment runs on the weekends. these values are then 
+//                  copied into the private data members of the calling Record object.
+// - copyRecord:    takes a Segment object by reference as input and copies 
+//                  it's data member values to the data members of the calling
+//                  Segment object.
+// - display:       takes no input. displays the data member values of the 
+//                  calling Segment object.
 
 #include "stack.h"
 #include <ostream>
@@ -11,12 +34,14 @@
 
 using namespace std;
 
+// constructor. initializes the head pointer to NULL and sets the stack index to 0
 Stack::Stack()
 {
     head = nullptr;
     top_index = 0;
 }
 
+// destructor. frees all memory allocated by stack objects
 Stack::~Stack()
 {
     SegmentNode * inc = head;
@@ -40,18 +65,32 @@ Stack::~Stack()
     cout << endl;
 }
 
+// takes Segment object by reference and pushes it onto the top of the stack
 int Stack::push(Segment & to_push)
 {
+    // if the current node's array is full
+    // or there are no nodes initialized on
+    // the stack, we handle that the same
     if(top_index == MAX || head == nullptr)
     {
+        // allocate a Segment node, place it at the front of the list,
+        // and allocate an array of Segments of size MAX.
         SegmentNode * tmp = new SegmentNode;
         tmp->next = head;
         head = tmp;
         head->segments = new Segment[MAX];
         top_index = 0;
+
+        // copy the passed segments data to the segment at the 
+        // top of the stack,
         head->segments[top_index].copySegment(to_push);
         ++top_index;
     }
+    // if the current node's array is ot full
+    // and we have at least one node in the 
+    // list, then we simply copy the passed 
+    // segment to the next available element
+    // on our current array.
     else
     {
         head->segments[top_index].copySegment(to_push);
@@ -61,32 +100,46 @@ int Stack::push(Segment & to_push)
     return 0;
 }
 
+// removes segment object from the top of the stack and copies it to
+// the passed by referece segment object
 int Stack::pop(Segment & pop_to)
 {
+    // if the current node's array is empty we will have to pop
+    // from the next node if it exists.
     if(top_index == 0)
     {
+        // if there is no next node, return error indicating there are  
+        // no segments to pop
         if(head->next == nullptr)
-            return 1; //error: nothing left to pop
-            
+            return 1; 
+        
+        // point temporary deleter node to the head of the list
+        // and increment head to the next node
         SegmentNode * deleter = head;
         head = head->next;
         
+        // set index to top of the next node and copy the segment
+        // at that element
         top_index = MAX-1;
         pop_to.copySegment(head->segments[top_index]);
-
+        
+        // free our segment array and node that was empty
         delete[] deleter->segments;
         delete deleter;
-            
-
     }
+    // if the current node's array is not empty, then we can
+    // decrement the index to pop it from the stack and then
+    // copy it's data to the passed by reference segment
     else
     {
         --top_index;
         pop_to.copySegment(head->segments[top_index]);
     }
+
     return 0;
 }
 
+//
 int Stack::peek()
 {
 

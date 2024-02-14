@@ -41,20 +41,18 @@ Queue::Queue()
 
 Queue::~Queue()
 {
-/*33
-    RecordNode * deleter = rear;
-    RecordNode * inc = rear;
+    RecordNode * inc = rear->next;
+    RecordNode * next_node;
 
-    if(rear == nullptr)
-        return;
-
-    while(inc != rear)
+    while(!(inc == rear))
     {
-        deleter = inc;
-        releaseRecordNode(deleter);
-        inc = inc->next;
+        delete inc->record;
+        next_node = inc->next;
+        delete inc;
+        inc = next_node;
+
     }
-*/
+
 }
 
 int Queue::enqueue(Record & to_enqueue)
@@ -160,8 +158,17 @@ Record::Record()
 
 Record::~Record()
 {
-    delete[] name;
-    delete[] notes;
+    if(name != nullptr)
+    {
+        cout << " deleteing " << name << endl;
+        delete[] name;
+    }
+
+    if(notes != nullptr)
+    {
+        cout << " deleteing " << notes << endl;
+        delete[] notes;
+    }
 }
 
 int Record::createRecord(char * name, char * notes, int start_time, int length_miles)

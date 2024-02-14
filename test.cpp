@@ -323,8 +323,6 @@ int main()
 {
     Stack my_trip;
     Queue my_queue;
-    Segment popped_segment;
-    Record popped_record;
     int response;
     char again;
     int method_result;

@@ -44,25 +44,21 @@ Stack::Stack()
 // destructor. frees all memory allocated by stack objects
 Stack::~Stack()
 {
+/*
     SegmentNode * inc = head;
-    SegmentNode * tmp;
-    int tmp_index = top_index - 1;
+    SegmentNode * next_node;
 
     // outer while loop traverses the LLL 
     while(!(inc == nullptr))
     {
-        // inner fo
-        for(tmp_index; tmp_index >= 0; --tmp_index)
-        {
-            inc->segments[tmp_index].~Segment();
-        }
-        tmp = inc;
-        inc = inc->next;
-        delete[] tmp->segments;
-        delete tmp;
-        tmp_index = MAX-1;
+        delete[] inc->segments;
+        next_node = inc->next;
+        delete inc;
+        inc = next_node;
     }
-    cout << endl;
+*/
+
+    releaseStack(head);
 }
 
 // takes Segment object by reference and pushes it onto the top of the stack
@@ -184,6 +180,23 @@ int Stack::display()
     return 0;
 }
 
+int Stack::releaseStack(SegmentNode * head)
+{
+    SegmentNode * placeholder;
+
+    if(head == nullptr)
+        return 0;
+
+    placeholder = head->next;
+    
+    delete[] head->segments;
+    delete head;
+
+    releaseStack(placeholder);
+
+    return 0;
+}
+
 Segment::Segment()
 {
     char * transit_type = nullptr;
@@ -194,9 +207,23 @@ Segment::Segment()
 
 Segment::~Segment()
 {
-    delete[] transit_type;
-    delete[] location_start;
-    delete[] location_end;
+    if(transit_type != nullptr)
+    {
+        cout << "deleting " << transit_type << endl;
+        delete[] transit_type;
+    }
+
+    if(location_start != nullptr)
+    {
+        cout << "deleting " << location_start << endl;
+        delete[] location_start;
+    }
+    
+    if(location_end != nullptr)
+    {
+        cout << "deleting " << location_end << endl;
+        delete[] location_end;
+    }
 }
 
 int Segment::createSegment(char * transit_type, char * location_start, char * location_end, bool runs_on_weekends)
@@ -269,3 +296,5 @@ int Segment::copyString(char * copy_from, char * &copy_to)
 
     return 0;
 }
+
+

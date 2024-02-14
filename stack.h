@@ -44,4 +44,7 @@ class Stack
     SegmentNode * head;
     // array index for keeping track of the current top of the stack
     int top_index;
+
+    //recursive function to deallocate our stack
+    int releaseStack(SegmentNode * head);
 };
